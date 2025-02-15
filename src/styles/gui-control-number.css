@@ -1,0 +1,46 @@
+article > div {
+    position: relative;
+}
+
+article > div > button {
+    all: unset;
+    position: absolute;
+    right: .0625rem;
+    height: 50%;
+    width: 1.5rem;
+    mask-image: url('/images/arrow_up.svg');
+    mask-position: center 66.666%;
+    mask-size: 33.333%;
+    mask-repeat: no-repeat;
+    background-color: var(--gui-color-500);
+    transition: background-color 125ms ease-in-out;
+    cursor: pointer;
+}
+
+article > div > button:hover {
+    background-color: var(--gui-color-600);
+}
+
+article > div > button:active {
+    background-color: var(--gui-color-700);
+}
+
+
+article > div > button:first-of-type {
+    top: .0625rem;
+}
+
+article > div > button:last-of-type {
+    bottom: .0625rem;
+    transform: rotate(180deg);
+}
+
+
+input {
+    padding-right: 1.5rem;
+}
+
+input::-webkit-inner-spin-button {
+    appearance: none;
+    display: none;
+}

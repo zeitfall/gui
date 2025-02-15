@@ -1,0 +1,41 @@
+:host {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: .5rem !important;
+    width: min(32rem, 100%);
+}
+
+:host > article {
+    display: flex;
+    flex-direction: column;
+    border-radius: .25rem;
+    background-color: var(--gui-color-100);
+}
+
+header,
+footer {
+    min-height: 2rem;
+    align-content: center;
+    padding-inline: .5rem;
+}
+
+header {
+    border-bottom: .0625rem solid var(--gui-color-400);
+}
+
+header h4 {
+    font-size: 1rem;
+}
+
+footer {
+    display: none;
+    border-top: .0625rem solid var(--gui-color-400);
+}
+
+main {
+    display: grid;
+    gap: .5rem;
+    padding: .5rem;
+    padding-bottom: .75rem;
+}

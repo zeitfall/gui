@@ -1,0 +1,56 @@
+:host([opened]) article {
+    grid-template-rows: 2rem 1fr;
+}
+
+:host([opened]) button {
+    transform: rotate(0);
+}
+
+article {
+    display: grid;
+    grid-template-rows: 2rem 0fr;
+    border-radius: .25rem;
+    border: .0625rem solid var(--gui-color-300);
+    background-color: var(--gui-color-200);
+    transition: grid-template-rows 250ms ease-in-out;
+    overflow: hidden;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: .5rem;
+    cursor: pointer;
+}
+
+header > button {
+    flex: 0 0 1.5rem;
+    height: 100%;
+    border: none;
+    transform: rotate(180deg);
+    mask-image: url('/images/arrow_up.svg');
+    mask-size: 33.333%;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    background-color: var(--gui-color-600);
+    transition:
+        background-color 125ms ease-in-out,
+        transform 250ms ease-in-out;
+    cursor: pointer;
+}
+
+header > button:hover {
+    background-color: var(--gui-color-700);
+}
+
+main {
+    overflow: hidden;
+}
+
+main > div {
+    display: grid;
+    gap: .5rem;
+    padding: .5rem;
+    border-top: .0625rem solid var(--gui-color-300);
+}

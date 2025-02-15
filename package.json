@@ -1,7 +1,7 @@
 {
-  "name": "template",
+  "name": "mono-gui",
   "version": "1.0.0",
-  "description": "Template project",
+  "description": "GUI library based on WC",
   "type": "module",
   "scripts": {
     "dev": "vite",

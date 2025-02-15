@@ -1,0 +1,39 @@
+:host {
+    min-height: var(--gui-control-min-height);
+}
+
+:host > article {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    gap: .5rem;
+    height: 100%;
+}
+
+article > label {
+    align-content: center;
+    padding: .25rem;
+    border: .0625rem solid var(--gui-color-400);
+    border-radius: .25rem;
+    background-color: var(--gui-color-300);
+    color: var(--gui-color-600);
+    text-align: center;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    height: 100%;
+    padding-inline: .5rem;
+    border: .0625rem solid var(--gui-color-500);
+    border-radius: .25rem;
+    outline: none;
+    background-color: var(--gui-color-400);
+    color: var(--gui-color-600);
+}
+
+object {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}

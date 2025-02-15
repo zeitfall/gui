@@ -1,0 +1,5 @@
+textarea {
+    min-height: var(--gui-control-min-height);
+    resize: vertical;
+    padding: .5rem;
+}

@@ -1,0 +1,24 @@
+input {
+    appearance: none;
+    position: relative;
+    width: auto;
+    height: 100%;
+    aspect-ratio: 1;
+    margin-right: auto;
+    padding: 0;
+}
+
+input::before {
+    content: '';
+    position: absolute;
+    inset: .25rem;
+    padding: 0;
+    border-radius: .0625rem;
+    background-color: var(--gui-color-500);
+    transition: opacity 125ms ease-in-out;
+    opacity: 0;
+}
+
+input:checked::before {
+    opacity: 1;
+}

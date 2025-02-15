@@ -1,0 +1,11 @@
+:host {
+    --gui-color-100: #050505;
+    --gui-color-200: #0f0f0f;
+    --gui-color-300: #1e1e1e;
+    --gui-color-400: #282828;
+    --gui-color-500: #494949;
+    --gui-color-600: #d2d2d2;
+    --gui-color-700: #fbfbfb;
+
+    --gui-control-min-height: 2rem;
+}

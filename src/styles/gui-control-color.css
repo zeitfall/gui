@@ -1,0 +1,30 @@
+:host > article > div {
+    display: grid;
+    grid-template-columns: 1fr 4rem;
+    gap: .5rem;
+}
+
+:host > article > div span {
+    align-content: center;
+    padding: .25rem;
+    border: .0625rem solid var(--gui-color-400);
+    border-radius: .25rem;
+    background-color: var(--gui-color-300);
+    color: var(--gui-color-600);
+    text-align: center;
+}
+
+input {
+    appearance: none;
+    padding: 0;
+    overflow: hidden;
+}
+
+input::-webkit-color-swatch-wrapper {
+    padding: .25rem;
+}
+
+input::-webkit-color-swatch {
+    border: none;
+    border-radius: .0625rem;
+}

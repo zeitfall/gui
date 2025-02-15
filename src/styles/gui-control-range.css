@@ -1,0 +1,49 @@
+article > div {
+    display: grid;
+    grid-template-columns: 2rem 1fr 2rem 4rem;
+    gap: .5rem;
+}
+
+span {
+    align-content: center;
+    padding: .25rem;
+    border: .0625rem solid var(--gui-color-400);
+    border-radius: .25rem;
+    background-color: var(--gui-color-300);
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    cursor: default;
+}
+
+input {
+    appearance: none;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+input:focus {
+    outline: 0;
+}
+
+input::-webkit-slider-runnable-track {
+    position: relative;
+    height: .25rem;
+    border: none;
+    border-radius: .25rem;
+    background-color: var(--gui-color-400);
+}
+
+input::-webkit-slider-thumb {
+    appearance: none;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem;
+    height: 1rem;
+    border-radius: .25rem;
+    background-color: var(--gui-color-500);
+}
