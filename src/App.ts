@@ -9,7 +9,6 @@ const object = GUI.reactive({
     valueD: {
         nestedA: 30,
         nestedB: 'Random text',
-        nestedC: { a: 1, b: 2, c: 3 },
         nestedD: false,
     },
     valueE: '',
@@ -20,11 +19,10 @@ guiElement
         type: 'range',
         min: -10,
         max: 50,
-        step: 1,
     })
     .add(object, 'valueB', { type: 'text' })
     .add(object, 'valueC', { type: 'checkbox' })
-    .add(object.valueD, 'nestedA', { type: 'number', step: 1 })
+    .add(object.valueD, 'nestedA', { type: 'number' })
     .add(object, 'valueD', { type: 'debug' })
     .add(object.valueD, 'nestedB', { type: 'textarea' })
     .add(object, 'valueE', {
@@ -37,9 +35,7 @@ guiElement
         },
     });
 
-// setInterval(() => {
-//     // object.valueA++;
-//     // object.valueD.nestedA++;
-
-//     console.log(object.valueE);
-// }, 100);
+setInterval(() => {
+    object.valueA++;
+    object.valueD.nestedA++;
+}, 100);

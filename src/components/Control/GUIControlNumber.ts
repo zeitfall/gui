@@ -49,14 +49,14 @@ export default class GUIControlNumber extends GUIControl<number, typeof GUI_CONT
 
     connectedCallback() {
         this._shadowRoot.addEventListener('click', (event) => {
-            if (event.target === this._incrementElement) {
-                this._setValue(this.value + this._stepValue);
+            const { target } = event;
 
-                return;
-            }
+            if (target === this._incrementElement || target === this._decrementElement) {
+                const sign = target === this._incrementElement ? 1 : -1;
 
-            if (event.target === this._decrementElement) {
-                this._setValue(this.value - this._stepValue);
+                this._setValue(this.value + sign * this._stepValue);
+
+                this._dispatchEvent('input');
             }
         }, { signal: _controller.signal });
     }

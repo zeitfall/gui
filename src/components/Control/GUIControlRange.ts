@@ -15,6 +15,7 @@ const GUI_CONTROL_RANGE_OBSERVED_ATTRIBUTES = [
 
 const GUI_CONTROL_DEFAULT_MIN = 0;
 const GUI_CONTROL_DEFAULT_MAX = 100;
+const GUI_CONTROL_DEFAULT_STEP = 1;
 
 export default class GUIControlRange extends GUIControl<number, typeof GUI_CONTROL_RANGE_OBSERVED_ATTRIBUTES> {
     declare protected readonly _minElement: HTMLSpanElement;
@@ -59,6 +60,14 @@ export default class GUIControlRange extends GUIControl<number, typeof GUI_CONTR
         }
 
         return GUI_CONTROL_DEFAULT_MAX;
+    }
+
+    protected get _stepValue() {
+        if (this.hasAttribute('step')) {
+            return parseFloat(this.getAttribute('step'));
+        }
+
+        return GUI_CONTROL_DEFAULT_STEP;
     }
 
     protected _handleValueAttributeChange(value: string) {

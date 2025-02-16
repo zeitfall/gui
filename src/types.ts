@@ -17,17 +17,17 @@ export interface GUIControlTextareaOptions extends GUIControlBaseOptions {
 
 export interface GUIControlNumberOptions extends GUIControlBaseOptions {
     type: 'number';
-    step: number;
+    step?: number;
 }
 
 export interface GUIControlRangeOptions extends GUIControlBaseOptions {
     type: 'range';
-    min: number;
-    max: number;
-    step: number;
+    min?: number;
+    max?: number;
+    step?: number;
 }
 
-export interface GUIControlCheckboxOptions {
+export interface GUIControlCheckboxOptions extends GUIControlBaseOptions {
     type: 'checkbox';
 }
 

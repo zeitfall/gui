@@ -7,7 +7,7 @@ export default class GUIControlCheckbox extends GUIControl<boolean> {
         const template = `
             <article id="root">
                 <label id="label"></label>
-                <input id="input" type="checkbox" />
+                <input id="input" type="checkbox" title="Check" />
             </article>
         `;
 
@@ -16,6 +16,10 @@ export default class GUIControlCheckbox extends GUIControl<boolean> {
 
     protected _handleValueAttributeChange(value: string) {
         this._inputElement.checked = JSON.parse(value);
+    }
+
+    protected _handlePlaceholderAttributeChange(value: string): void {
+        this._inputElement.setAttribute('title', value);
     }
 
     protected _getValue() {
