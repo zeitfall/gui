@@ -22,6 +22,10 @@ export function isHTMLElement(value: unknown): value is HTMLElement {
     return value && value instanceof HTMLElement;
 }
 
+export function isHTMLLIElement(value: unknown): value is HTMLLIElement {
+    return value && value instanceof HTMLLIElement;
+}
+
 export function clamp(value: number, min: number, max: number) {
     return Math.max(min, Math.min(value, max));
 }

@@ -108,6 +108,10 @@ export default class GUIControlNumber extends GUIControl<number, typeof GUI_CONT
     protected _setValue(value: number) {
         const _value = clamp(value, this._minValue, this._maxValue);
 
+        if (this.value === _value) {
+            return;
+        }
+
         this.setAttribute('value', _value.toString());
     }
 }

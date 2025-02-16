@@ -1,6 +1,6 @@
-export interface GUIControlSelectOption {
+export interface GUIControlSelectOption<V = unknown> {
     label: string;
-    value: unknown;
+    value: V;
 }
 
 export interface GUIControlBaseOptions {

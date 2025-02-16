@@ -1,3 +1,36 @@
-select option[disabled] {
-    color: var(--gui-color-600);
+article > div {
+    position: relative;
 }
+
+article > div > gui-dropdown {
+    position: absolute;
+    inset: 0;
+}
+
+article > div > gui-dropdown::part(root),
+article > div > gui-dropdown::part(div) {
+    border-color: var(--gui-color-500);
+}
+
+article > div > gui-dropdown::part(header) {
+    background-color: var(--gui-color-400);
+}
+
+article > div > gui-dropdown > li {
+    display: flex;
+    align-items: center;
+    min-height: 2rem;
+    padding-inline: .5rem;
+    border-radius: .25rem;
+    list-style: none;
+    transition: background-color 125ms ease-in-out;
+}
+
+article > div > gui-dropdown > li:hover {
+    background-color: var(--gui-color-300);
+}
+
+article > div > gui-dropdown > li[selected] {
+    background-color: var(--gui-color-400);
+}
+

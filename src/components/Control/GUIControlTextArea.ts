@@ -35,7 +35,7 @@ export default class GUIControlTextArea extends GUIControl {
         this._textAreaElement.value = value;
     }
 
-    protected _getValue(): unknown {
+    protected _getValue() {
         return this._textAreaElement.value;
     }
 }

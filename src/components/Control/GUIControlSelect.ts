@@ -2,29 +2,41 @@ import GUIControl from './GUIControl';
 
 import GUIControlSelectStyles from '../../styles/gui-control-select.css?inline';
 
-import { isObject, isArray, isSelectOption } from '../../utils';
+import { isObject, isArray, isSelectOption, isHTMLLIElement } from '../../utils';
 
 import { GUI_CONTROL_DEFAULT_OBSERVED_ATTRIBUTES } from '../../constants';
+
+import type { GUIControlSelectOption } from '../../types';
 
 const GUI_CONTROL_SELECT_OBSERVED_ATTRIBUTES = [
     ...GUI_CONTROL_DEFAULT_OBSERVED_ATTRIBUTES,
     'options',
 ] as const;
 
+const _controller = new AbortController();
+
 export default class GUIControlSelect extends GUIControl<unknown, typeof GUI_CONTROL_SELECT_OBSERVED_ATTRIBUTES> {
-    declare protected readonly _selectElement: HTMLSelectElement;
+    protected readonly _options: WeakMap<HTMLLIElement, GUIControlSelectOption<string>>;
+
+    declare protected readonly _dropdownElement: HTMLSelectElement;
+    declare protected readonly _placeholderElement: HTMLTitleElement;
 
     constructor() {
         const template = `
             <article id="root">
                 <label id="label"></label>
-                <select id="select">
-                    <option value selected disabled>Enter</option>
-                </select>
+                
+                <div>
+                    <gui-dropdown id="dropdown">
+                        <h4 id="placeholder" slot="title">Select</h4>
+                    </gui-dropdown>
+                </div>
             </article>
         `;
 
         super(template, GUIControlSelectStyles);
+
+        this._options = new WeakMap();
 
         this._attributeHandlers.set('options', this._handleOptionsAttributeChange.bind(this));
     }
@@ -33,23 +45,56 @@ export default class GUIControlSelect extends GUIControl<unknown, typeof GUI_CON
         return GUI_CONTROL_SELECT_OBSERVED_ATTRIBUTES;
     }
 
+    connectedCallback() {
+        this._dropdownElement.addEventListener('click', (event) => {
+            const { target } = event;
+
+            if (isHTMLLIElement(target) && this._options.has(target)) {
+                const { label, value } = this._options.get(target);
+
+                this._setSelected(target);
+                this._setValue(value);
+                this._placeholderElement.textContent = label;
+
+                this._dropdownElement.removeAttribute('opened');
+            }
+
+        }, { signal: _controller.signal });
+    }
+
+    disconnectedCallback() {
+        _controller.abort();
+    }
+
+    protected _setSelected(target: HTMLLIElement) {
+        const elements = this._shadowRoot.querySelectorAll('li[selected]');
+
+        elements.forEach((element) => {
+            if (element === target) {
+                target.setAttribute('selected', '');
+
+                return;
+            }
+
+            element.removeAttribute('selected');
+        });
+    }
+
     protected _handleTypeAttributeChange(_value: string) {}
 
     protected _handleKeyAttributeChange(value: string) {
-        this._selectElement.setAttribute('id', value);
+        this._dropdownElement.setAttribute('id', value);
         this._labelElement.setAttribute('for', value);
 
         this._labelElement.textContent = value;
     }
 
     protected _handlePlaceholderAttributeChange(value: string): void {
-        const optionElement = this._selectElement.querySelector('option[disabled]');
-
-        optionElement.textContent = value;
+        this._placeholderElement.textContent = value;
     }
 
-    protected _handleValueAttributeChange(value: string) {
-        this._selectElement.value = value;
+    protected _handleValueAttributeChange() {
+        this._dispatchEvent('input');
     }
 
     protected _handleOptionsAttributeChange(options: string) {
@@ -57,14 +102,17 @@ export default class GUIControlSelect extends GUIControl<unknown, typeof GUI_CON
 
         if (isObject(_options)) {
             Object.entries(_options).forEach((option) => {
-                const [key, value] = option;
+                const [label, value] = option;
 
-                const optionElement = document.createElement('option');
+                const listElement = document.createElement('li');
 
-                optionElement.textContent = key;
-                optionElement.setAttribute('value', value);
+                listElement.textContent = label;
+                listElement.setAttribute('value', value);
+                listElement.setAttribute('aria-role', 'option');
 
-                this._selectElement.append(optionElement);
+                this._options.set(listElement, { label, value });
+
+                this._dropdownElement.append(listElement);
             });
 
             return;
@@ -72,20 +120,23 @@ export default class GUIControlSelect extends GUIControl<unknown, typeof GUI_CON
 
         if (isArray(_options)) {
             _options.forEach((option) => {
-                const optionElement = document.createElement('option');
+                const listElement = document.createElement('li');
 
-                let key = String(option);
-                let value = key;
+                let label = String(option);
+                let value = label;
 
                 if (isSelectOption(option)) {
-                    key = option.label;
+                    // eslint-disable-next-line prefer-destructuring
+                    label = option.label;
                     value = String(option.value);
                 }
 
-                optionElement.textContent = key;
-                optionElement.setAttribute('value', value);
+                listElement.textContent = label;
+                listElement.setAttribute('value', value);
 
-                this._selectElement.append(optionElement);
+                this._options.set(listElement, { label, value });
+
+                this._dropdownElement.append(listElement);
             });
 
             return;
@@ -94,7 +145,7 @@ export default class GUIControlSelect extends GUIControl<unknown, typeof GUI_CON
         throw new TypeError(`[GUIControlSelect]: The type of options is not valid. Type "${typeof _options}" given.`);
     }
 
-    protected _getValue(): unknown {
-        return this._selectElement.value;
+    protected _getValue() {
+        return this.getAttribute('value');
     }
 }

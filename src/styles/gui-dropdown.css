@@ -54,3 +54,7 @@ main > div {
     padding: .5rem;
     border-top: .0625rem solid var(--gui-color-300);
 }
+
+main > div > ::slotted(*) {
+    cursor: pointer;
+}

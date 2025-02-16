@@ -33,11 +33,13 @@ guiElement
             labelA: 'valueA',
             labelB: 'valueB',
             labelC: 'valueC',
+            labelD: 'valueD',
         },
     });
 
-setInterval(() => {
-    // object.valueA++;
-    object.valueD.nestedA++;
+// setInterval(() => {
+//     // object.valueA++;
+//     // object.valueD.nestedA++;
 
-}, 100);
+//     console.log(object.valueE);
+// }, 100);

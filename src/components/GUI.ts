@@ -14,16 +14,15 @@ import type { GUIControlOptions } from '../types';
 const _controller = new AbortController();
 
 export default class GUI extends GUIComponent {
-    static controls: WeakMap<object, Map<PropertyKey, GUIControl>>;
-    static sources: WeakMap<GUIControl, object>;
+    protected static _controls: WeakMap<object, Map<PropertyKey, GUIControl>>;
+    protected static _sources: WeakMap<GUIControl, object>;
 
     declare protected readonly _mainElement: HTMLElement;
-    declare protected readonly _slotElement: HTMLSlotElement;
     declare protected readonly _footerElement: HTMLElement;
 
     static {
-        this.controls = new WeakMap();
-        this.sources = new WeakMap();
+        this._controls = new WeakMap();
+        this._sources = new WeakMap();
     }
 
     constructor() {
@@ -79,8 +78,8 @@ export default class GUI extends GUIComponent {
                     return value;
                 },
                 set(target, property, value, receiver) {
-                    if (GUI.controls.has(receiver)) {
-                        const controls = GUI.controls.get(receiver);
+                    if (GUI._controls.has(receiver)) {
+                        const controls = GUI._controls.get(receiver);
 
                         if (controls.has(property)) {
                             controls.get(property).value = value;
@@ -99,18 +98,63 @@ export default class GUI extends GUIComponent {
         this._shadowRoot.addEventListener('input', (event) => {
             const { target: element } = event;
 
-            if (isGUIControlElement(element) && GUI.sources.has(element)) {
-                const target = GUI.sources.get(element);
+            if (isGUIControlElement(element) && GUI._sources.has(element)) {
+                const source = GUI._sources.get(element);
                 const property = element.getAttribute('property');
 
                 // @ts-expect-error ...
-                target[property] = element.value;
+                source[property] = element.value;
             }
         }, { passive: true, signal: _controller.signal });
     }
 
     disconnectedCallback() {
         _controller.abort();
+    }
+
+    group(title: string) {
+        const groupElement = document.createElement('gui-group');
+
+        groupElement.setAttribute('title', title);
+
+        this._mainElement.append(groupElement);
+    }
+
+    add<T extends object, P extends keyof T & string>(
+        target: T,
+        property: P,
+        options: GUIControlOptions<T[P]>
+    ) {
+        const value = target[property];
+
+        const controlElement = this._createControl({
+            ...options,
+            property,
+            value,
+        });
+
+        if (GUI._controls.has(target)) {
+            const controls = GUI._controls.get(target);
+
+            if (controls.has(property)) {
+                throw new Error(`A control associated with property [${property}] already exists.`);
+            }
+
+            controls.set(property, controlElement);
+        }
+        else {
+            const controls = new Map();
+
+            controls.set(property, controlElement);
+
+            GUI._controls.set(target, controls);
+        }
+
+        GUI._sources.set(controlElement, target);
+
+        this._mainElement.append(controlElement);
+
+        return this;
     }
 
     protected _createControl<
@@ -143,50 +187,5 @@ export default class GUI extends GUIComponent {
         });
 
         return element as GUIControl;
-    }
-
-    group(title: string) {
-        const groupElement = document.createElement('gui-group');
-
-        groupElement.setAttribute('title', title);
-
-        this._mainElement.append(groupElement);
-    }
-
-    add<T extends object, P extends keyof T & string>(
-        target: T,
-        property: P,
-        options: GUIControlOptions<T[P]>
-    ) {
-        const value = target[property];
-
-        const controlElement = this._createControl({
-            ...options,
-            property,
-            value,
-        });
-
-        if (GUI.controls.has(target)) {
-            const controls = GUI.controls.get(target);
-
-            if (controls.has(property)) {
-                throw new Error(`A control associated with property [${property}] already exists.`);
-            }
-
-            controls.set(property, controlElement);
-        }
-        else {
-            const controls = new Map();
-
-            controls.set(property, controlElement);
-
-            GUI.controls.set(target, controls);
-        }
-
-        GUI.sources.set(controlElement, target);
-
-        this._mainElement.append(controlElement);
-
-        return this;
     }
 }

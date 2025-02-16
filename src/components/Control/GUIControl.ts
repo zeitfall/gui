@@ -63,6 +63,10 @@ export default class GUIControl<
     protected _setValue(value: unknown): void {
         const _value = String(value);
 
+        if (this.value === _value) {
+            return;
+        }
+
         this.setAttribute('value', _value);
     }
 }

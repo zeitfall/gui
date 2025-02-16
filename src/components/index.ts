@@ -7,7 +7,7 @@ import GUIControlColor from './Control/GUIControlColor';
 import GUIControlDebug from './Control/GUIControlDebug';
 import GUIControlSelect from './Control/GUIControlSelect';
 
-import GUIGroup from './GUIGroup';
+import GUIDropdown from './GUIDropdown';
 import GUI from './GUI';
 
 customElements.define('gui-control-text', GUIControlText);
@@ -19,7 +19,7 @@ customElements.define('gui-control-color', GUIControlColor);
 customElements.define('gui-control-debug', GUIControlDebug);
 customElements.define('gui-control-select', GUIControlSelect);
 
-customElements.define('gui-group', GUIGroup);
+customElements.define('gui-dropdown', GUIDropdown);
 customElements.define('gui-element', GUI);
 
 export {

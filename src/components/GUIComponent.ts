@@ -52,4 +52,10 @@ export default class GUIComponent<A extends readonly unknown[] = unknown[]> exte
 
         this._shadowRoot.adoptedStyleSheets.push(stylesheet);
     }
+
+    protected _dispatchEvent(type: string) {
+        const event = new Event(type, { bubbles: true });
+
+        this.dispatchEvent(event);
+    }
 }
